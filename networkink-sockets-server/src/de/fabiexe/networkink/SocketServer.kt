@@ -2,12 +2,18 @@ package de.fabiexe.networkink
 
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.ByteWriteChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.CoroutineContext
 
-class SocketServer(val port: Int) : DefaultServer() {
+class SocketServer(
+    val port: Int,
+    val readFrame: suspend (ByteReadChannel) -> ByteArray = ::defaultReadFrame,
+    val writeFrame: suspend (ByteWriteChannel, ByteArray) -> Unit = ::defaultWriteFrame
+) : DefaultServer() {
     private var socket: ServerSocket? = null
 
     override suspend fun start(dispatcher: CoroutineContext) {
@@ -26,7 +32,7 @@ class SocketServer(val port: Int) : DefaultServer() {
         val closeScope = CoroutineScope(dispatcher)
         while (true) {
             val clientSocket = socket!!.accept()
-            val connection = SocketConnection(clientSocket)
+            val connection = SocketConnection(clientSocket, readFrame, writeFrame)
 
             // Add connection
             connectionsLock.withLock {

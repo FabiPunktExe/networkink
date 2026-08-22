@@ -20,6 +20,7 @@ test-dependencies:
   - //networkink-sockets-client
   - //networkink-sockets-server
   - //networkink-test
+  - $libs.cryptographyKotlin.provider.optimal
 
 settings:
   ktor: enabled
@@ -27,4 +28,4 @@ settings:
     enabled: true
     group: de.fabiexe.networkink
     artifactId: networkink-sockets
-    version: 1.0.0
+    version: 1.0.1

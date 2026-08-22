@@ -22,6 +22,7 @@ test-dependencies:
   - //networkink-websockets-server
   - $ktor.client.cio
   - $ktor.server.cio
+  - $libs.cryptographyKotlin.provider.optimal
 
 settings:
   ktor: enabled
@@ -29,4 +30,4 @@ settings:
     enabled: true
     group: de.fabiexe.networkink
     artifactId: networkink-websockets
-    version: 1.0.0
+    version: 1.0.1
