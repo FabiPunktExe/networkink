@@ -1,0 +1,26 @@
+product:
+  type: kmp/lib
+  platforms: [ jvm, android, js, wasmJs, linuxX64, linuxArm64, macosArm64, tvosArm64, iosArm64, watchosArm64, mingwX64 ]
+
+repositories:
+  - id: diruptioPublic
+    url: https://repo.diruptio.de/repository/maven-public-releases
+    resolve: false
+    publish: true
+    credentials:
+      file: //local.properties
+      usernameKey: diruptio_repo_username
+      passwordKey: diruptio_repo_password
+
+dependencies:
+  - //networkink-core
+  - //networkink-sockets
+  - $ktor.network
+
+settings:
+  ktor: enabled
+  publishing:
+    enabled: true
+    group: de.fabiexe.networkink
+    artifactId: networkink-sockets-client
+    version: 1.0.0

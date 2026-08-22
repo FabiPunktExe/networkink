@@ -1,0 +1,10 @@
+modules:
+  - networkink-core
+  - networkink-protocol
+  - networkink-sockets
+  - networkink-sockets-client
+  - networkink-sockets-server
+  - networkink-test
+  - networkink-websockets
+  - networkink-websockets-client
+  - networkink-websockets-server

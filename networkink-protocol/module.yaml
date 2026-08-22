@@ -1,0 +1,30 @@
+product:
+  type: kmp/lib
+  platforms: [ jvm, android, js, wasmJs, linuxX64, linuxArm64, macosArm64, tvosArm64, iosArm64, watchosArm64, mingwX64 ]
+
+repositories:
+  - url: https://repo.diruptio.de/repository/maven-public
+  - id: diruptioPublic
+    url: https://repo.diruptio.de/repository/maven-public-releases
+    resolve: false
+    publish: true
+    credentials:
+      file: //local.properties
+      usernameKey: diruptio_repo_username
+      passwordKey: diruptio_repo_password
+
+dependencies:
+  - //networkink-core
+  - $libs.kotlinx.coroutines.core
+  - $libs.buffer
+  - $libs.cryptographyKotlin.provider.optimal: runtime-only
+
+settings:
+  kotlin:
+    serialization: json
+  ktor: enabled
+  publishing:
+    enabled: true
+    group: de.fabiexe.networkink
+    artifactId: networkink-protocol
+    version: 1.0.0
