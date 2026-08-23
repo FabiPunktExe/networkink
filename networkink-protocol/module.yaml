@@ -27,4 +27,4 @@ settings:
     enabled: true
     group: de.fabiexe.networkink
     artifactId: networkink-protocol
-    version: 1.0.2
+    version: 1.0.3

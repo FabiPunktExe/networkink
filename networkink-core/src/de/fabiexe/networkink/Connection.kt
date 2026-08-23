@@ -35,9 +35,8 @@ abstract class Connection {
                 receive()
             }
         } catch (e: Exception) {
-            println("Connection closed: ${e.message}")
-            e.printStackTrace()
             close()
+            handler.disconnected(this, e)
         }
     }
 
@@ -56,6 +55,7 @@ abstract class Connection {
                 writeByteArray(transformedData)
             } catch (_: ClosedWriteChannelException) {
                 close()
+                handler.disconnected(this, null)
             }
         }
     }

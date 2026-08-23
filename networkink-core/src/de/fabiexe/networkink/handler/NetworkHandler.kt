@@ -18,4 +18,6 @@ open class NetworkHandler<T : Any>(val type: KClass<T>) {
             throw IllegalArgumentException("Unexpected data/packet type: ${data::class}")
         }
     }
+
+    open suspend fun disconnected(connection: Connection, exception: Exception? = null) {}
 }
