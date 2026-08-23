@@ -28,4 +28,4 @@ settings:
     enabled: true
     group: de.fabiexe.networkink
     artifactId: networkink-sockets
-    version: 1.0.3
+    version: 1.0.4

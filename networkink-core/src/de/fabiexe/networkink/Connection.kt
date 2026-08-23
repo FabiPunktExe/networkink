@@ -3,7 +3,6 @@ package de.fabiexe.networkink
 import de.fabiexe.networkink.handler.NetworkHandler
 import de.fabiexe.networkink.handler.NoopHandler
 import de.fabiexe.networkink.transformer.Transformer
-import io.ktor.utils.io.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -35,8 +34,8 @@ abstract class Connection {
                 receive()
             }
         } catch (e: Exception) {
+            handler.exceptionThrown(this, e)
             close()
-            handler.disconnected(this, e)
         }
     }
 
@@ -51,12 +50,7 @@ abstract class Connection {
             throw IllegalArgumentException("Transformed data must be a ByteArray")
         }
         writeLock.withLock {
-            try {
-                writeByteArray(transformedData)
-            } catch (_: ClosedWriteChannelException) {
-                close()
-                handler.disconnected(this, null)
-            }
+            writeByteArray(transformedData)
         }
     }
 

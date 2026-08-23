@@ -30,4 +30,4 @@ settings:
     enabled: true
     group: de.fabiexe.networkink
     artifactId: networkink-websockets
-    version: 1.0.3
+    version: 1.0.4

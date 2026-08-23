@@ -43,6 +43,7 @@ class WebSocketServer(private val ktorEngine: ApplicationEngineFactory<*, *>, va
 
                     listener!!.await()(connection)
                     connection.closeSignal.join()
+                    connection.handler.closed(connection)
                 }
             }
         }

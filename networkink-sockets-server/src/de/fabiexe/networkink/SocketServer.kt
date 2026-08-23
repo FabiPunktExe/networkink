@@ -45,6 +45,7 @@ class SocketServer(
                 connectionsLock.withLock {
                     connections -= connection
                 }
+                connection.handler.closed(connection)
             }
 
             listener(connection)

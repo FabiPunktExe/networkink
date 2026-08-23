@@ -19,5 +19,6 @@ open class NetworkHandler<T : Any>(val type: KClass<T>) {
         }
     }
 
-    open suspend fun disconnected(connection: Connection, exception: Exception? = null) {}
+    open suspend fun exceptionThrown(connection: Connection, exception: Exception) {}
+    open suspend fun closed(connection: Connection) {}
 }
