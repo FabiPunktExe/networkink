@@ -22,4 +22,4 @@ settings:
     enabled: true
     group: de.fabiexe.networkink
     artifactId: networkink-core
-    version: 1.0.1
+    version: 1.0.2
