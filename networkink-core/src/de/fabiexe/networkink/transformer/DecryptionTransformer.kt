@@ -1,9 +1,11 @@
 package de.fabiexe.networkink.transformer
 
-import dev.whyoleg.cryptography.algorithms.AES
+import dev.whyoleg.cryptography.operations.Decryptor
 
-class DecryptionTransformer(val key: AES.GCM.Key) : Transformer<ByteArray, ByteArray>(ByteArray::class) {
+class DecryptionTransformer(
+    val decryptorProvider: () -> Decryptor
+) : Transformer<ByteArray, ByteArray>(ByteArray::class) {
     override fun transform(input: ByteArray): ByteArray {
-        return key.cipher().decryptBlocking(input)
+        return decryptorProvider().decryptBlocking(input)
     }
 }

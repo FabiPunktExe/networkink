@@ -22,10 +22,13 @@ object ClientEncryptionHandler : NetworkHandler<S2CEncryptRequestPacket>(S2CEncr
         val decoder = rsa.publicKeyDecoder(SHA512)
         val rsaPublicKey = decoder.decodeFromByteArray(RSA.PublicKey.Format.DER, data.publicKey)
         val aesKey = aes.keyGenerator().generateKey()
+
         val aesKeyBytes = aesKey.encodeToByteArray(AES.Key.Format.RAW)
         val encryptedAesKey = rsaPublicKey.encryptor().encrypt(aesKeyBytes)
         connection.send(C2SEncryptResponsePacket(encryptedAesKey))
-        connection.incomingTransformers.add(0, DecryptionTransformer(aesKey))
-        connection.outgoingTransformers += EncryptionTransformer(aesKey)
+
+        val cipher = aesKey.cipher()
+        connection.incomingTransformers.add(0, DecryptionTransformer { cipher })
+        connection.outgoingTransformers.add(EncryptionTransformer { cipher })
     }
 }

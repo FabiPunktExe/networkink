@@ -22,8 +22,10 @@ class ServerEncryptionHandler : NetworkHandler<C2SEncryptResponsePacket>(C2SEncr
     override suspend fun handle(connection: Connection, data: C2SEncryptResponsePacket) {
         val aesKeyBytes = rsaKeyPair.privateKey.decryptor().decrypt(data.key)
         val aesKey = aes.keyDecoder().decodeFromByteArray(AES.Key.Format.RAW, aesKeyBytes)
-        connection.incomingTransformers.add(0, DecryptionTransformer(aesKey))
-        connection.outgoingTransformers += EncryptionTransformer(aesKey)
+
+        val cipher = aesKey.cipher()
+        connection.incomingTransformers.add(0, DecryptionTransformer { cipher })
+        connection.outgoingTransformers.add(EncryptionTransformer { cipher })
     }
 
     private companion object {
