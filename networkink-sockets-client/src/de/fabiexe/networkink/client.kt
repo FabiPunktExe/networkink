@@ -10,8 +10,8 @@ suspend fun connect(
     host: String,
     port: Int,
     dispatcher: CoroutineContext = Dispatchers.Default,
-    readFrame: suspend (ByteReadChannel) -> ByteArray = ::defaultReadFrame,
-    writeFrame: suspend (ByteWriteChannel, ByteArray) -> Unit = ::defaultWriteFrame
+    readFrame: suspend (Connection, ByteReadChannel) -> ByteArray = ::defaultReadFrame,
+    writeFrame: suspend (Connection, ByteWriteChannel, ByteArray) -> Unit = ::defaultWriteFrame
 ): SocketConnection {
     val socket = aSocket(SelectorManager(dispatcher)).tcp().connect(host, port)
     return SocketConnection(socket, readFrame, writeFrame)

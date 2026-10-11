@@ -11,8 +11,8 @@ import kotlin.coroutines.CoroutineContext
 
 class SocketServer(
     val port: Int,
-    val readFrame: suspend (ByteReadChannel) -> ByteArray = ::defaultReadFrame,
-    val writeFrame: suspend (ByteWriteChannel, ByteArray) -> Unit = ::defaultWriteFrame
+    val readFrame: suspend (Connection, ByteReadChannel) -> ByteArray = ::defaultReadFrame,
+    val writeFrame: suspend (Connection, ByteWriteChannel, ByteArray) -> Unit = ::defaultWriteFrame
 ) : DefaultServer() {
     private var socket: ServerSocket? = null
 

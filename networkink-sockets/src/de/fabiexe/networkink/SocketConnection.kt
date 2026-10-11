@@ -5,18 +5,18 @@ import io.ktor.utils.io.*
 
 class SocketConnection(
     val socket: Socket,
-    val readFrame: suspend (ByteReadChannel) -> ByteArray,
-    val writeFrame: suspend (ByteWriteChannel, ByteArray) -> Unit
+    val readFrame: suspend (Connection, ByteReadChannel) -> ByteArray,
+    val writeFrame: suspend (Connection, ByteWriteChannel, ByteArray) -> Unit
 ) : Connection() {
     private val readChannel = socket.openReadChannel()
     private val writeChannel = socket.openWriteChannel()
 
     override suspend fun readByteArray(): ByteArray {
-        return readFrame(readChannel)
+        return readFrame(this, readChannel)
     }
 
     override suspend fun writeByteArray(data: ByteArray) {
-        writeFrame(writeChannel, data)
+        writeFrame(this, writeChannel, data)
     }
 
     override fun close() {
@@ -24,14 +24,22 @@ class SocketConnection(
     }
 }
 
-suspend fun defaultReadFrame(readChannel: ByteReadChannel): ByteArray {
+private const val DEFAULT_MAX_FRAME_SIZE = 2 * 1024 * 1024
+
+suspend fun defaultReadFrame(
+    connection: Connection,
+    readChannel: ByteReadChannel,
+    maxFrameSize: Int = DEFAULT_MAX_FRAME_SIZE
+): ByteArray {
     val size = readChannel.readInt()
+    require(size in 0..maxFrameSize) { "Frame size $size is out of range 0..$maxFrameSize" }
+
     val byteArray = ByteArray(size)
     readChannel.readFully(byteArray)
     return byteArray
 }
 
-suspend fun defaultWriteFrame(writeChannel: ByteWriteChannel, data: ByteArray) {
+suspend fun defaultWriteFrame(connection: Connection, writeChannel: ByteWriteChannel, data: ByteArray) {
     writeChannel.writeInt(data.size)
     writeChannel.writeByteArray(data)
     writeChannel.flush()
