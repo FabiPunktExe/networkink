@@ -19,6 +19,10 @@ class SocketConnection(
         writeFrame(this, writeChannel, data)
     }
 
+    override fun isOpen(): Boolean {
+        return !socket.isClosed
+    }
+
     override fun close() {
         socket.close()
     }

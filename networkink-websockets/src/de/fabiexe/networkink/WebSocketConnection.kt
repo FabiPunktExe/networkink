@@ -19,6 +19,10 @@ class WebSocketConnection(val session: WebSocketSession) : Connection() {
         session.outgoing.send(Frame.Binary(true, data))
     }
 
+    override fun isOpen(): Boolean {
+        return !closeSignal.isCompleted
+    }
+
     override fun close() {
         closeSignal.complete(Unit)
     }

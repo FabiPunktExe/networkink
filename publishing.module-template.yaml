@@ -1,0 +1,16 @@
+repositories:
+  - id: diruptioPublic
+    url: https://repo.diruptio.de/repository/maven-public-releases
+    resolve: false
+    publish: true
+    credentials:
+      file: //local.properties
+      usernameKey: diruptio_repo_username
+      passwordKey: diruptio_repo_password
+
+settings:
+  publishing:
+    enabled: true
+    group: de.fabiexe.networkink
+    version: 1.0.7
+    publishSources: true

@@ -16,6 +16,7 @@ abstract class Connection {
 
     protected abstract suspend fun readByteArray(): ByteArray
     protected abstract suspend fun writeByteArray(data: ByteArray)
+    abstract fun isOpen(): Boolean
     abstract fun close()
 
     suspend fun receive() {
